@@ -34,20 +34,19 @@ if __name__ == "__main__":
     # Robot payload = 0.09kg(bracket) + 0.65kg(RG2) + ??? (??? : work piece)
     try:
         f = open('D:\\new\\sampling.csv', 'w', newline="")  # .csv file open
-        # open(' 경로 + 파일명(변경가능).csv', 'w', newline="")
+        # open(' 경로 + 파일명(각자 파일 경로 파악 필요).csv', 'w', newline="") 
         makefile = csv.writer(f)
 
-        makefile.writerow(['시간', '베이스', '숄더', '엘보우', '손목1', '손목2', '손목3'])
-        # writerow(배열항목) 파일에 새로운row(열)로 배열항목을 추가 (줄바꿈)
-        # 생성하는 파일의 첫 행에 들어갈 7개 항목 입력. ,로 열 추가
+        makefile.writerow(['time', 'base', 'shoulder', 'elbow', 'joint1', 'joint2', 'joint3'])
+        # Line break
+        # Enter 7 items to be in the first line of the file to be created. , Add as column
 
-        # 1970년 1월 1일 자정 이후로 누적된 초를 float 단위로 반환
         t_begin = time.time()  # Read current time
         t_now = time.time()
 
         # Value Function
-        joint = rob.getj()  # 로봇팔 관절마다의 각(라디안)을 가져옵니다 [베이스, 숄더, 엘보우, 손목1, 손목2, 손목3]
-        tcp_po = rob.getl()  # TCP의 위치를 가져옵니다. [ x, y, z, Rx, Ry, Rz ] (x,y,z는 m단위) (R~ 의 단위도 라디안)
+        joint = rob.getj()  # Take Radian for each part of the robot arm [Base, shoulder, Elbow, Joint1, Joint2, Joint3]
+        tcp_po = rob.getl()  # Import to PCP [ x, y, z, Rx, Ry, Rz ] (x,y,z is m(Meter)) (R~(Radian)))
         tcp_cur = rob.get_pose()  # get current transform from base to to tcp
         tool_pos = rob.get_pos()  # get tool tip pos(x,y,z) in base coordinate system
         tool_ori = rob.get_orientation()  # get tool orientation in base coordinate system
@@ -68,7 +67,7 @@ if __name__ == "__main__":
         print(tool_ori)
         print(" ")
         print("Move URsim view front of me")
-        wait()  # 엔터를 입력받을때까지 대기. 화면에는 Click enter to continue 출력.
+        wait()  # Wait until to type Enter
         wait()
 
         t_now = time.time() - t_begin # Time from initial time to now
@@ -79,7 +78,7 @@ if __name__ == "__main__":
         # Command to move
         rob.movej([1.570796, -1.570796, 0, -1.570796, 0, 0], acc=1.5, vel=1, wait=False)
         # movej : Command to move by giving a value in radians to each joint
-        # ( [베이스, 숄더, 엘보우, 손목1, 손목2, 손목3], acc=가속도 rad/s^2, vel= 속도 rad/s, wait=False)
+        # ( [Base, shoulder, Elbow, Joint1, Joint2, Joint3], acc = acceleration rad/s^2, vel = speed rad/s, wait = False)
         print("move position.")
         wait()
 
@@ -91,7 +90,7 @@ if __name__ == "__main__":
         pre = [0, -1.57, 0, -1.57, 0, 0]
         rob.movej(pre, acc=1.5, vel=1, wait=False)
         print("Move by time")
-        wait()  # 아래 창에 "Move by time"이 나오고 수식에 따른 움직임(아래 eq1_~)을 주기 이전에 enter키를 누르기 전까지 대기
+        wait()  # Wait until enter key is pressed
         t_begin = time.time()  # Read current time
         x = sp.symbols('x')  # Declare that x will be used as an unknown variable
 
@@ -105,7 +104,7 @@ if __name__ == "__main__":
         eq1_5 = 0 * x
         eq1_6 = 0 * x
 
-        while t_now <= 5:  # During to 5 sec
+        while t_now <= 5:  # 5 sec 
             t_now = time.time() - t_begin  # Time from initial time to now
             joint_now = rob.getj()  # Receiving the current joint value
             makefile.writerow(
@@ -132,7 +131,7 @@ if __name__ == "__main__":
         eq2_5 = 0 * x
         eq2_6 = 0 * x
 
-        while t_now <= 10:  # while문 내부를 5초동안 동작 (10초 - 이전루프시간 5초)
+        while t_now <= 10:  # 10 sec
             t_now = time.time() - t_begin  # Time from initial time to now
             time_while_2 = t_now - 5  # If you want to measure or use the time of the loop only, use time_while_2
                                     # The content is the time from the beginning to the present-5 seconds 
@@ -140,7 +139,7 @@ if __name__ == "__main__":
             joint_now = rob.getj()  # Receiving the current joint value
             makefile.writerow([t_now, joint_now[0], joint_now[1], joint_now[2], joint_now[3], joint_now[4], joint_now[5]])
             # Record the time and values of each joint to a file
-ㅕ
+
             t_now = time.time() - t_begin  # Time from initial time to now
 
             rob.movej([eq2_1.subs(x, t_now), eq2_2.subs(x, t_now), eq2_3.subs(x, t_now), eq2_4.subs(x, t_now),
