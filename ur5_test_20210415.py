@@ -70,19 +70,19 @@ if __name__ == "__main__":
         wait()  # Wait until to type Enter
         wait()
 
-        t_now = time.time() - t_begin # Time from initial time to now
+        t_now = time.time() - t_begin # Start time to Present time
         joint_now = rob.getj()  # Receiving the current joint value
         makefile.writerow([t_now, joint_now[0], joint_now[1], joint_now[2], joint_now[3], joint_now[4], joint_now[5]])
         # Record the time and values of each joint to a file
 
-        # Command to move
+        # Commanding for move
         rob.movej([1.570796, -1.570796, 0, -1.570796, 0, 0], acc=1.5, vel=1, wait=False)
         # movej : Command to move by giving a value in radians to each joint
         # ( [Base, shoulder, Elbow, Joint1, Joint2, Joint3], acc = acceleration rad/s^2, vel = speed rad/s, wait = False)
         print("move position.")
         wait()
 
-        t_now = time.time() - t_begin # Time from initial time to now
+        t_now = time.time() - t_begin # Start time to Present time
         joint_now = rob.getj()  # Receiving the current joint value
         makefile.writerow([t_now, joint_now[0], joint_now[1], joint_now[2], joint_now[3], joint_now[4], joint_now[5]])
         # Record the time and values of each joint to a file
@@ -96,7 +96,7 @@ if __name__ == "__main__":
 
         # Route 1st Start
 
-        t_now = time.time() - t_begin  # Time from initial time to now
+        t_now = time.time() - t_begin  # Start time to Present time
         eq1_1 = 0 * x
         eq1_2 = -1.57 + 0 * x
         eq1_3 = -1.57 * sp.sin(0.314 * x)
@@ -105,25 +105,25 @@ if __name__ == "__main__":
         eq1_6 = 0 * x
 
         while t_now <= 5:  # 5 sec 
-            t_now = time.time() - t_begin  # Time from initial time to now
+            t_now = time.time() - t_begin  # Start time to Present time
             joint_now = rob.getj()  # Receiving the current joint value
             makefile.writerow(
                 [t_now, joint_now[0], joint_now[1], joint_now[2], joint_now[3], joint_now[4], joint_now[5]])
             # Record the time and values of each joint to a file
 
-            t_now = time.time() - t_begin  # Time from initial time to now
+            t_now = time.time() - t_begin  # Start time to Present time
 
             rob.movej([eq1_1.subs(x, t_now), eq1_2.subs(x, t_now), eq1_3.subs(x, t_now), eq1_4.subs(x, t_now),
                        eq1_5.subs(x, t_now), eq1_6.subs(x, t_now)], acc=1, vel=5, wait=False)
 
             # Robot arm drive by adding (time*constant) value from the specified joint angle
-            t_now = time.time() - t_begin  # Time from initial time to now
+            t_now = time.time() - t_begin  # Start time to Present time
             time.sleep(0.5)  # waiting time 0.05sec
 
 
         # Route 2nd Start
 
-        t_now = time.time() - t_begin  # Time from initial time to now
+        t_now = time.time() - t_begin  # Start time to Present time
         eq2_1 = 1.57 * sp.sin(0.314 * x)-1.57
         eq2_2 = -1.57 + 0 * x
         eq2_3 = -1.57 + 0 * x
@@ -132,21 +132,21 @@ if __name__ == "__main__":
         eq2_6 = 0 * x
 
         while t_now <= 10:  # 10 sec
-            t_now = time.time() - t_begin  # Time from initial time to now
+            t_now = time.time() - t_begin  # Start time to Present time
             time_while_2 = t_now - 5  # If you want to measure or use the time of the loop only, use time_while_2
                                     # The content is the time from the beginning to the present-5 seconds 
-                                    # (where 5 seconds is because 5 seconds were used in the previous loop)                              
+                                    # 5 seconds elapsed from previous loop                      
             joint_now = rob.getj()  # Receiving the current joint value
             makefile.writerow([t_now, joint_now[0], joint_now[1], joint_now[2], joint_now[3], joint_now[4], joint_now[5]])
             # Record the time and values of each joint to a file
 
-            t_now = time.time() - t_begin  # Time from initial time to now
+            t_now = time.time() - t_begin  # Start time to Present time
 
             rob.movej([eq2_1.subs(x, t_now), eq2_2.subs(x, t_now), eq2_3.subs(x, t_now), eq2_4.subs(x, t_now),
                        eq2_5.subs(x, t_now), eq2_6.subs(x, t_now)], acc=1, vel=5, wait=False)
 
         # Robot arm drive by adding (time*constant) value from the specified joint angle
-            t_now = time.time() - t_begin  # Time from initial time to now
+            t_now = time.time() - t_begin  # Start time to Present time
             time.sleep(0.5)  # waiting time 0.05sec
 
 
@@ -155,4 +155,4 @@ if __name__ == "__main__":
         f.close()
         # End
     finally:
-        rob.close()  # Robot connection done.
+        rob.close()  # Robot connection off.
